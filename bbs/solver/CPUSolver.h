@@ -437,7 +437,6 @@ public:
 			if (t.elapsed() > time_limit) {
 				cout << t.elapsed() << endl;
 				statistics.time_out = true;
-				statistics.solve_time = t.elapsed();
 				return statistics;
 			}
 
@@ -467,8 +466,6 @@ public:
 private:
 	HModel* hm_;
 	GModel* gm_;
-	int64_t time = 0;
-
 };
 
 static ByteSize GetBitSetSize(int mds) {

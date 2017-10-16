@@ -18,7 +18,7 @@ const string XPath = "BMPath.xml";
 const int64_t TimeLimit = 400000;
 const string bmp_root = "E:/Projects/benchmarks/xcsp/";
 const string bmp_ext = ".xml";
-const int num_bm = 1;
+const int num_bm = 10;
 int main(const int argc, char ** argv) {
 
 	if (argc <= 1) {
@@ -35,8 +35,8 @@ int main(const int argc, char ** argv) {
 		int64_t num_sol = 0;
 
 		for (size_t j = 0; j < num_bm; j++) {
-			char num[3];
-			sprintf_s(num, "%02d", j);
+			char num[2];
+			sprintf_s(num, "%d", j);
 			const string bm_path = bmp_root + argv[i + 1] + num + bmp_ext;
 			cout << bm_path << endl;
 
@@ -79,7 +79,7 @@ int main(const int argc, char ** argv) {
 		cout << "SAC time = " << sum_sact <<
 			" || SAC count = " << num_sac <<
 			" || Build time = " << sum_but <<
-			" || time out = " << num_bm - num_sol <<
+			" || num solve = " << num_sol <<
 			" || Solve time =" << sum_st <<
 			" || nodes = " << sum_nod << endl;
 	}
