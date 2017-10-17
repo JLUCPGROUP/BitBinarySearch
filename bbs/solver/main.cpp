@@ -15,9 +15,10 @@ using namespace std;
 
 
 const string XPath = "BMPath.xml";
-const int64_t TimeLimit = 400000;
+const int64_t TimeLimit = 600000;
 const string bmp_root = "E:/Projects/benchmarks/xcsp/";
-const string bmp_ext = ".xml";
+//const string bmp_ext = ".xml";
+const string bmp_ext = "_X2.xml";
 const int num_bm = 10;
 int main(const int argc, char ** argv) {
 

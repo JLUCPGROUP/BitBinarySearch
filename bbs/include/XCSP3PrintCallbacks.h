@@ -1,28 +1,28 @@
 /*=============================================================================
- * parser for CSP instances represented in XCSP3 Format
- *
- * Copyright (c) 2015 xcsp.org (contact <at> xcsp.org)
- * Copyright (c) 2008 Olivier ROUSSEL (olivier.roussel <at> cril.univ-artois.fr)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *=============================================================================
- */
+* parser for CSP instances represented in XCSP3 Format
+*
+* Copyright (c) 2015 xcsp.org (contact <at> xcsp.org)
+* Copyright (c) 2008 Olivier ROUSSEL (olivier.roussel <at> cril.univ-artois.fr)
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in
+* all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+* THE SOFTWARE.
+*=============================================================================
+*/
 #ifndef COSOCO_XCSP3PRINTCALLBACKS_H
 #define COSOCO_XCSP3PRINTCALLBACKS_H
 #include "XCSP3CoreParser.h"
@@ -31,14 +31,14 @@
 #include "HModel.h"
 using namespace cudacp;
 /**
- * This is an example that prints useful informations of a XCSP3 instance.
- * You need to create your own class and to override functions of the callback.
- * We suggest to make a map between XVariable and your own variables in order to
- * facilitate the constructions of constraints.
- *
- * see main.cc to show declaration of the parser
- *
- */
+* This is an example that prints useful informations of a XCSP3 instance.
+* You need to create your own class and to override functions of the callback.
+* We suggest to make a map between XVariable and your own variables in order to
+* facilitate the constructions of constraints.
+*
+* see main.cc to show declaration of the parser
+*
+*/
 
 namespace XCSP3Core {
 
@@ -409,7 +409,7 @@ void XCSP3PrintCallbacks::buildConstraintExtensionAs(string id, vector<XVariable
 	vector<string> scope(list.size());
 	for (size_t i = 0; i < scope.size(); ++i)
 		scope[i] = list[i]->id;
-	hm->AddTab(hm->tabs[con_cnt - 1], scope);
+	hm->AddTabAsPrevious(hm->tabs[con_cnt - 1], scope);
 	con_cnt++;
 }
 

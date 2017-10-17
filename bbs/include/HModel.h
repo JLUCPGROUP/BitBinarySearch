@@ -1,9 +1,9 @@
 /*
- * HModel.h
- *
- *  Created on: 2017年9月26日
- *      Author: leezear
- */
+* HModel.h
+*
+*  Created on: 2017年9月26日
+*      Author: leezear
+*/
 
 #ifndef HMODEL_H_
 #define HMODEL_H_
@@ -30,6 +30,9 @@ public:
 	string name;
 	vector<int> vals;
 	unordered_map<int, int> val_map;
+	vector<int> anti_map;
+	const int std_min = 0;
+	const int std_max;
 	HVar(const int id, const string name, const int min_val, const int max_val);
 	HVar(const int id, const string name, vector<int>& v);
 	~HVar();
@@ -44,8 +47,10 @@ public:
 	bool semantics;
 	vector<HVar*> scope;
 	vector<vector<int>> tuples;
+	bool isSTD = false;
 	HTab(const int id, const bool sem, vector<vector<int>>& ts,
 		vector<HVar*>& scp);
+	HTab(HTab* t, vector<HVar*>& scp);
 	int GetAllSize() const;
 	void GetSTDTuple(vector<int>& src_tuple, vector<int>& std_tuple);
 	void GetORITuple(vector<int>& std_tuple, vector<int>& ori_tuple);
@@ -72,7 +77,7 @@ public:
 	void AddVar(const int id, const string name, vector<int>& v);
 	void AddTab(const int id, const bool sem, vector<vector<int>>& ts, vector<HVar*>& scp);
 	void AddTab(const int id, const bool sem, vector<vector<int>>& ts, vector<string>& scp);
-	void AddTab(HTab* t, vector<string>& scp);
+	void AddTabAsPrevious(HTab* t, vector<string>& scp);
 	int max_domain_size() const { return mds_; }
 	void Show();
 private:
