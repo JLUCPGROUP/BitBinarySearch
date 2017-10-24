@@ -20,6 +20,7 @@ class GModel: public Space {
 private:
 public:
 	IntVarArray vars_;
+	int mds;
 	GModel();
 	GModel(bool share, GModel& s);
 	virtual Space* copy(bool share);

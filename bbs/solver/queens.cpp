@@ -1,8 +1,6 @@
 #pragma once
 #include <gecode/search.hh>
 #include <gecode/driver.hh>
-#include <sstream>
-#include <fstream>
 #include <string>
 #include "XCSP3PrintCallbacks.h"
 #include "BuildGModel.h"
@@ -18,15 +16,18 @@ using namespace std;
 const int TimeLimit = 600000;
 const string XPath = "BMPath.xml";
 
-int main() {
-	string bm_path;
-	if (FindBMPath(XPath))
-		bm_path = _bm_path;
-	cout << bm_path << endl;
-	HModel *hm = new HModel();
-	GetHModel(bm_path, hm);
+int main(const int argc, char ** argv) {
+	if (argc <= 1) {
+		cout << "no argument" << endl;
+		return 0;
+	}
+
+	const int n = atoi(argv[1]);
 	GModel* gm = new GModel();
-	BuildGModel(hm, gm);
+	BuildQueens(gm, n);
+
+	gm->print();
+	//delete gm;
 
 	GModel* dgm = static_cast<GModel*>(gm->clone());
 	Search::TimeStop ts(2000);
@@ -43,7 +44,7 @@ int main() {
 		cout << "nodes = " << ee.statistics().node << endl;
 		delete ss;
 	}
-	else 
+	else
 		find = 0;
 	const int64_t gecode_solve_time = t0.elapsed();
 	cout << "---------------gecode solving---------------" << endl;
@@ -57,7 +58,6 @@ int main() {
 	if (!result) {
 		cout << "UNSAC || SAC time = " << sac_time << endl;
 		cout << "--------------------end---------------------" << endl;
-		delete hm;
 		delete gm;
 		return 0;
 	}
@@ -65,12 +65,12 @@ int main() {
 	cout << "------------------modeling------------------" << endl;
 	const SearchStatistics statistics = StartSearch(hm, gm, Heuristic::VRH_MIN_DOM, Heuristic::VLH_MIN);
 	const string  slv_str = (statistics.num_sol > 0) ? "SAT!!" : "UNSAT";
-	delete hm;
+	//delete hm;
 	delete gm;
-	cout << "SAC time = " << sac_time << "|| Build time = " << statistics.build_time << endl;
-	cout << "------------------solving-------------------" << endl;
-	cout << slv_str << "|| Solve time = " << statistics.solve_time << "|| nodes = " << statistics.nodes << endl;
-	cout << "------------------sleeping------------------" << endl;
+	//cout << "SAC time = " << sac_time << "|| Build time = " << statistics.build_time << endl;
+	//cout << "------------------solving-------------------" << endl;
+	//cout << slv_str << "|| Solve time = " << statistics.solve_time << "|| nodes = " << statistics.nodes << endl;
+	//cout << "------------------sleeping------------------" << endl;
 
 	return 0;
 }

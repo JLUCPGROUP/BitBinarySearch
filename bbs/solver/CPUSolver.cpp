@@ -10,6 +10,13 @@ void AssignedStack::initial(HModel *m) {
 	asnd_.resize(m->vars.size(), false);
 };
 
+void AssignedStack::initial(GModel* m) {
+	m_ = nullptr;
+	max_size_ = m->vars_.size();
+	vals_.resize(m->vars_.size());
+	asnd_.resize(m->vars_.size(), false);
+};
+
 void AssignedStack::push(IntVal& v_a) {
 	vals_[top_] = v_a;
 	asnd_[v_a.v] = v_a.aop ? true : false;

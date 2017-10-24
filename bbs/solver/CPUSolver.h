@@ -199,6 +199,7 @@ public:
 	AssignedStack() {};
 
 	void initial(HModel *m);
+	void initial(GModel* m);
 	~AssignedStack() {};
 	void push(IntVal& v_a);
 	const IntVal pop();
@@ -420,7 +421,7 @@ template<class T>
 class CPUSolver {
 public:
 	AssignedStack I;
-	CPUSolver(HModel *hm, GModel* gm) :hm_(hm), gm_(gm) {
+	CPUSolver(GModel* gm) :gm_(gm) {
 		I.initial(hm_);
 		n.initial(hm_, &I, gm_);
 	}
@@ -513,21 +514,21 @@ SearchStatistics binary_search(HModel* hm, GModel *gm, Heuristic::Var varh, Heur
 static SearchStatistics StartSearch(HModel* hm, GModel *gm, const Heuristic::Var varh, const Heuristic::Val valh, const int64_t time_limit) {
 	switch (GetBitSetSize(hm->max_domain_size())) {
 	case u1to32:
-		return binary_search<bitset<32>>(hm, gm, varh, valh, time_limit);
+		return binary_search<bitset<32>>(gm, varh, valh, time_limit);
 	case u33to64:
-		return binary_search<bitset<64>>(hm, gm, varh, valh, time_limit);
+		return binary_search<bitset<64>>(gm, varh, valh, time_limit);
 	case u65to96:
-		return binary_search<bitset<96>>(hm, gm, varh, valh, time_limit);
+		return binary_search<bitset<96>>(gm, varh, valh, time_limit);
 	case u97to128:
-		return binary_search<bitset<128>>(hm, gm, varh, valh, time_limit);
+		return binary_search<bitset<128>>(gm, varh, valh, time_limit);
 	case u129to160:
-		return binary_search<bitset<160>>(hm, gm, varh, valh, time_limit);
+		return binary_search<bitset<160>>(gm, varh, valh, time_limit);
 	case u161to192:
-		return binary_search<bitset<192>>(hm, gm, varh, valh, time_limit);
+		return binary_search<bitset<192>>(gm, varh, valh, time_limit);
 	case u193to224:
-		return binary_search<bitset<224>>(hm, gm, varh, valh, time_limit);
+		return binary_search<bitset<224>>(gm, varh, valh, time_limit);
 	case u225to256:
-		return binary_search<bitset<256>>(hm, gm, varh, valh, time_limit);
+		return binary_search<bitset<256>>(gm, varh, valh, time_limit);
 	default:
 		cout << "out of limit!!" << endl;
 		SearchStatistics s;
