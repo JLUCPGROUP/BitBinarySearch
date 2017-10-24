@@ -60,7 +60,7 @@
 //			Search::Options options;
 //			options.stop = &ts;
 //			GModel* dgm = static_cast<GModel*>(gm->clone());
-//			branch(*dgm, dgm->vars_, INT_VAR_SIZE_MIN(), INT_VALUES_MIN());
+//			branch(*dgm, dgm->vs, INT_VAR_SIZE_MIN(), INT_VALUES_MIN());
 //			DFS<GModel> ee(dgm, options);
 //			delete dgm;
 //			int find = -1;

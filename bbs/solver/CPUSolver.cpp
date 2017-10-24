@@ -3,18 +3,17 @@ using namespace std;
 
 namespace cudacp {
 ////////////////////////////////////////////////////////////////////////////
-void AssignedStack::initial(HModel *m) {
-	m_ = m;
-	max_size_ = m->vars.size();
-	vals_.resize(m->vars.size());
-	asnd_.resize(m->vars.size(), false);
-};
+//void AssignedStack::initial(HModel *m) {
+//	m_ = m;
+//	max_size_ = m->vars.size();
+//	vals_.resize(m->vars.size());
+//	asnd_.resize(m->vars.size(), false);
+//};
 
 void AssignedStack::initial(GModel* m) {
-	m_ = nullptr;
-	max_size_ = m->vars_.size();
-	vals_.resize(m->vars_.size());
-	asnd_.resize(m->vars_.size(), false);
+	max_size_ = m->vs.size();
+	vals_.resize(m->vs.size());
+	asnd_.resize(m->vs.size(), false);
 };
 
 void AssignedStack::push(IntVal& v_a) {
@@ -23,7 +22,7 @@ void AssignedStack::push(IntVal& v_a) {
 	++top_;
 };
 
-const IntVal AssignedStack::pop() {
+IntVal AssignedStack::pop() {
 	--top_;
 	asnd_[vals_[top_].v] = false;
 	return vals_[top_];
@@ -62,8 +61,7 @@ void IntVal::flip() {
 	aop = !aop;
 }
 
-IntVal IntVal::next() const
-{
+IntVal IntVal::next() const {
 	return IntVal(v, a + 1, true);
 }
 

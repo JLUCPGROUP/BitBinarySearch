@@ -17,13 +17,12 @@ namespace cudacp {
 using namespace Gecode;
 using namespace std;
 class GModel: public Space {
-private:
 public:
-	IntVarArray vars_;
+	IntVarArray vs;
 	int mds;
 	GModel();
 	GModel(bool share, GModel& s);
-	virtual Space* copy(bool share);
+	Space* copy(bool share) override;
 	void print(void) const;
 	virtual ~GModel();
 };

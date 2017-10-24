@@ -13,8 +13,8 @@ using namespace Gecode;
 using namespace std;
 //#define LOGFILE
 
-const int TimeLimit = 600000;
-const string XPath = "BMPath.xml";
+const int time_limit = 600000;
+const string x_path = "BMPath.xml";
 
 int main(const int argc, char ** argv) {
 	if (argc <= 1) {
@@ -33,7 +33,7 @@ int main(const int argc, char ** argv) {
 	Search::TimeStop ts(2000);
 	Search::Options options;
 	options.stop = &ts;
-	branch(*dgm, dgm->vars_, INT_VAR_SIZE_MIN(), INT_VALUES_MIN());
+	branch(*dgm, dgm->vs, INT_VAR_SIZE_MIN(), INT_VALUES_MIN());
 	DFS<GModel> ee(dgm, options);
 	delete dgm;
 	int find = -1;
@@ -63,14 +63,13 @@ int main(const int argc, char ** argv) {
 	}
 
 	cout << "------------------modeling------------------" << endl;
-	const SearchStatistics statistics = StartSearch(hm, gm, Heuristic::VRH_MIN_DOM, Heuristic::VLH_MIN);
+	const SearchStatistics statistics = StartSearch(gm, Heuristic::VRH_MIN_DOM, Heuristic::VLH_MIN, time_limit);
 	const string  slv_str = (statistics.num_sol > 0) ? "SAT!!" : "UNSAT";
-	//delete hm;
 	delete gm;
-	//cout << "SAC time = " << sac_time << "|| Build time = " << statistics.build_time << endl;
-	//cout << "------------------solving-------------------" << endl;
-	//cout << slv_str << "|| Solve time = " << statistics.solve_time << "|| nodes = " << statistics.nodes << endl;
-	//cout << "------------------sleeping------------------" << endl;
+	cout << "SAC time = " << sac_time << "|| Build time = " << statistics.build_time << endl;
+	cout << "------------------solving-------------------" << endl;
+	cout << slv_str << "|| Solve time = " << statistics.solve_time << "|| nodes = " << statistics.nodes << endl;
+	cout << "------------------sleeping------------------" << endl;
 
 	return 0;
 }
