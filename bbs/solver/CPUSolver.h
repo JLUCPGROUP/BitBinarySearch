@@ -428,10 +428,10 @@ public:
 		Timer t;
 		bool finished = false;
 		SearchStatistics statistics;
-
+		
 		while (!finished) {
 			IntVal val = n.selectIntVal(varh, valh);
-			++statistics.nodes;
+
 			if (t.elapsed() > time_limit) {
 				cout << t.elapsed() << endl;
 				statistics.time_out = true;
@@ -439,19 +439,21 @@ public:
 			}
 
 			I.push(val);
+			++statistics.nodes;
 			SearchState state = n.push_back(val);
 
 			if ((state == S_BRANCH) && I.full()) {
-				cout << I << endl;
+				//cout << I << endl;
 				++statistics.num_sol;
 				statistics.solve_time = t.elapsed();
-				state = S_FAILED;
-				//return statistics;
+				//state = S_FAILED;
+				return statistics;
 			}
 
 			while (!(state == S_BRANCH) && !I.empty()) {
 				val = I.pop();
 				val.flip();
+				++statistics.nodes;
 				state = n.push_back(val);
 			}
 
