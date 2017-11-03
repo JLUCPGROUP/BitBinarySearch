@@ -2,15 +2,8 @@
 using namespace std;
 
 namespace cudacp {
-////////////////////////////////////////////////////////////////////////////
-//void AssignedStack::initial(HModel *m) {
-//	m_ = m;
-//	max_size_ = m->vars.size();
-//	vals_.resize(m->vars.size());
-//	asnd_.resize(m->vars.size(), false);
-//};
-
 void AssignedStack::initial(GModel* m) {
+	gm_ = m;
 	max_size_ = m->vs.size();
 	vals_.resize(m->vs.size());
 	asnd_.resize(m->vs.size(), false);

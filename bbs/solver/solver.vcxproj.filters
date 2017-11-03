@@ -46,6 +46,12 @@
     <ClCompile Include="queens.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="frb.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="folder.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="BMPath.xml">

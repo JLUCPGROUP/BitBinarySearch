@@ -28,26 +28,26 @@
 //	GModel* gm = new GModel();
 //	BuildGModel(hm, gm);
 //
-//	GModel* dgm = static_cast<GModel*>(gm->clone());
-//	Search::TimeStop ts(2000);
-//	Search::Options options;
-//	options.stop = &ts;
-//	branch(*dgm, dgm->vs, INT_VAR_SIZE_MIN(), INT_VALUES_MIN());
-//	DFS<GModel> ee(dgm, options);
-//	delete dgm;
-//	int find = -1;
-//	Timer t0;
-//	if (GModel* ss = ee.next()) {
-//		ss->print();
-//		find = 1;
-//		cout << "nodes = " << ee.statistics().node << endl;
-//		delete ss;
-//	}
-//	else 
-//		find = 0;
-//	const int64_t gecode_solve_time = t0.elapsed();
-//	cout << "---------------gecode solving---------------" << endl;
-//	cout << "Gecode solve time = " << gecode_solve_time << endl;
+//	//GModel* dgm = static_cast<GModel*>(gm->clone());
+//	//Search::TimeStop ts(2000);
+//	//Search::Options options;
+//	//options.stop = &ts;
+//	//branch(*dgm, dgm->vs, INT_VAR_SIZE_MIN(), INT_VALUES_MIN());
+//	//DFS<GModel> ee(dgm, options);
+//	//delete dgm;
+//	//int find = -1;
+//	//Timer t0;
+//	//if (GModel* ss = ee.next()) {
+//	//	ss->print();
+//	//	find = 1;
+//	//	cout << "nodes = " << ee.statistics().node << endl;
+//	//	delete ss;
+//	//}
+//	//else 
+//	//	find = 0;
+//	//const int64_t gecode_solve_time = t0.elapsed();
+//	//cout << "---------------gecode solving---------------" << endl;
+//	//cout << "Gecode solve time = " << gecode_solve_time << endl;
 //
 //
 //	SAC1 sac1(gm);
@@ -63,7 +63,7 @@
 //	}
 //
 //	cout << "------------------modeling------------------" << endl;
-//	const SearchStatistics statistics = StartSearch(hm, gm, Heuristic::VRH_MIN_DOM, Heuristic::VLH_MIN);
+//	const SearchStatistics statistics = StartSearch(gm, Heuristic::VRH_MIN_DOM, Heuristic::VLH_MIN, TimeLimit, sac_time);
 //	const string  slv_str = (statistics.num_sol > 0) ? "SAT!!" : "UNSAT";
 //	delete hm;
 //	delete gm;

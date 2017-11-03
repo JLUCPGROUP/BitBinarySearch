@@ -156,6 +156,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPUSolver.cpp" />
+    <ClCompile Include="folder.cpp" />
+    <ClCompile Include="frb.cpp" />
     <ClCompile Include="GModel.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="queens.cpp" />
