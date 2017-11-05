@@ -10,9 +10,17 @@ void AssignedStack::initial(GModel* m) {
 };
 
 void AssignedStack::push(IntVal& v_a) {
-	vals_[top_] = v_a;
-	asnd_[v_a.v] = v_a.aop ? true : false;
-	++top_;
+	const int pre = top_ - 1;
+	//进入的是positive decision 当前栈顶是negative decision
+	if (pre >= 0 && (!vals_[pre].aop) && v_a.aop) {
+		vals_[pre] = v_a;
+		asnd_[v_a.v] = true;
+	}
+	else {
+		vals_[top_] = v_a;
+		asnd_[v_a.v] = v_a.aop ? true : false;
+		++top_;
+	}
 };
 
 IntVal AssignedStack::pop() {
@@ -58,11 +66,11 @@ IntVal IntVal::next() const {
 	return IntVal(v, a + 1, true);
 }
 
-inline bool IntVal::operator==(const IntVal & rhs) {
+bool IntVal::operator==(const IntVal & rhs) {
 	return (this == &rhs) || (v == rhs.v && a == rhs.a && aop == rhs.aop);
 }
 
-inline bool IntVal::operator!=(const IntVal & rhs) {
+bool IntVal::operator!=(const IntVal & rhs) {
 	return !((this == &rhs) || (v == rhs.v && a == rhs.a && aop == rhs.aop));
 }
 
