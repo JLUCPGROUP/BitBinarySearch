@@ -195,6 +195,23 @@ const IntVal OutLastBroNode = IntVal(-2, -3);
 const IntVal OutLastNode = IntVal(-2, -4);
 };
 
+//class Decision {
+//public:
+//
+//	int size() const {
+//		return  ds_.size();
+//	}
+//
+//	IntVal next() {
+//		return ds_[++curr_];
+//	}
+//
+//
+//private:
+//	std::vector<IntVal> ds_;
+//	int curr_ = -1;
+//};
+
 class AssignedStack {
 public:
 	AssignedStack() {};
@@ -223,6 +240,18 @@ protected:
 	int max_size_;
 };
 
+//class DecisionBuilder {
+//private:
+//public:
+//	virtual ~DecisionBuilder() = default;
+//	virtual Decision MakeDecision() = 0;
+//
+//};
+//
+//class Min_Dom_Val :public DecisionBuilder {
+//	IntVal
+//};
+
 template< class T>
 class NetworkStack {
 public:
@@ -244,30 +273,23 @@ public:
 	}
 
 	SearchState push(const IntVal& val) {
-		if (val.aop) {
-			const int pre = I_->size();
-			top_ = I_->size() + 1;
-			for (size_t i = 0; i < vs_size_; i++) {
-				s_[pre + 1][i] = s_[pre][i] & bm_.bsd[val.v][val.a][i];
-				if (!s_[pre + 1][i].any())
-					return S_FAILED;
-			}
-		}
-		else {
-			const int pre = I_->size() + 1;
-			top_ = I_->size() + 1;
-			//T t = s_[top_][val.v];
-			//t[val.a] = 0;
-			//const int pre = top_ - 1;
-			//++top_;
-			s_[pre][val.v][val.a] = 0;
-			//if (!t.any())
-			//	return S_FAILED;
-			if (!s_[pre][val.v].any()) {
-				return S_FAILED;
-			}
+		const int pre = top_ - 1;;
+		++top_;
+		//if (val.aop) {
 
+		for (size_t i = 0; i < vs_size_; i++) {
+			s_[pre + 1][i] = s_[pre][i] & bm_.bsd[val.v][val.a][i];
+			if (!s_[pre + 1][i].any())
+				return S_FAILED;
 		}
+		//}
+		//else {
+		//	s_[pre][val.v][val.a] = 0;
+		//	if (!s_[pre][val.v].any()) {
+		//		return S_FAILED;
+		//	}
+
+		//}
 		return S_BRANCH;
 	}
 
@@ -280,9 +302,10 @@ public:
 		top_ = I_->size() + 1;
 		for (size_t i = 0; i < vs_size_; i++) {
 			s_[pre][i] = s_[pre - 1][i] & bm_.bsd[val.v][val.a][i];
-			if (!s_[pre][i].any())
+			if (s_[pre][i].none())
 				return S_FAILED;
 		}
+
 		//for (size_t i = 0; i < vs_size_; ++i)
 		//	for (size_t j = 0; j < gm_->mds; ++j)
 		//		if (s_[pre][i][j])
@@ -292,7 +315,7 @@ public:
 
 		//for (size_t i = 0; i < vs_size_; ++i) {
 		//	s_[pre][i] &= r_[i];
-		//	if (!s_[pre][i].any())
+		//	if (s_[pre][i].none())
 		//		return S_FAILED;
 		//}
 		return S_BRANCH;
@@ -303,19 +326,19 @@ public:
 		top_ = I_->size() + 1;
 		r_.assign(vs_size_, 0);
 		s_[pre - 1][val.v][val.a] = 0;
-		if (!s_[pre - 1][val.v].any())
+		if (s_[pre - 1][val.v].none())
 			return S_FAILED;
 
-		//for (size_t i = gm_->vs[val.v].min(); i <= gm_->vs[val.v].max(); ++i)
-		//	if (s_[pre - 1][val.v].test(i))
-		//		for (size_t j = 0; j < vs_size_; ++j)
-		//			r_[j] |= bm_.bsd[val.v][i][j];
+		for (size_t i = gm_->vs[val.v].min(); i <= gm_->vs[val.v].max(); ++i)
+			if (s_[pre - 1][val.v].test(i))
+				for (size_t j = 0; j < vs_size_; ++j)
+					r_[j] |= bm_.bsd[val.v][i][j];
 
-		//for (size_t i = 0; i < vs_size_; ++i) {
-		//	s_[pre][i] = r_[i] & s_[pre - 1][i];
-		//	if (!s_[pre][i].any())
-		//		return S_FAILED;
-		//}
+		for (size_t i = 0; i < vs_size_; ++i) {
+			s_[pre][i] = r_[i] & s_[pre - 1][i];
+			if (s_[pre][i].none())
+				return S_FAILED;
+		}
 		return S_BRANCH;
 	}
 
@@ -470,7 +493,7 @@ public:
 		case Heuristic::DS_NB:
 		{
 			const int var = v_a.v;
-			for (size_t i = v_a.a; i < mds_; ++i)
+			for (size_t i = v_a.a + 1; i < mds_; ++i)
 				if (s_[top_ - 1][var].test(i))
 					return IntVal(var, i);
 			return SearchNode::NullNode;
@@ -499,6 +522,7 @@ private:
 	int vs_size_;
 	int mds_;
 	int top_ = 0;
+	//DecisionBuilder* db_;
 };
 
 template<class T>
@@ -533,7 +557,7 @@ public:
 			SearchState state = n.push_back(val);
 
 			if ((state == S_BRANCH) && I.full()) {
-				cout << I << endl;
+				//cout << I << endl;
 				++statistics.num_sol;
 				statistics.solve_time = t.elapsed();
 				//state = S_FAILED;
@@ -543,7 +567,7 @@ public:
 			while (!(state == S_BRANCH) && !I.empty()) {
 				val = I.pop();
 				val.flip();
-				++statistics.nodes;
+				//++statistics.nodes;
 				state = n.push_back(val);
 			}
 
@@ -559,7 +583,12 @@ public:
 		time_limit -= (start_time + statistics.build_time);
 		IntVal d = n.decision(varh, valh, ds);
 		bool consistent;
-		while ((t.elapsed() < time_limit) && ((!I.empty()) || (d != SearchNode::NullNode))) {
+		while ((!I.empty()) || (d != SearchNode::NullNode)) {
+			if (t.elapsed() > time_limit) {
+				cout << t.elapsed() << endl;
+				statistics.time_out = true;
+				return statistics;
+			}
 
 			if (d != SearchNode::NullNode) {
 				++statistics.nodes;
@@ -571,7 +600,7 @@ public:
 				if (I.full()) {
 					++statistics.num_sol;
 					statistics.solve_time = t.elapsed();
-					cout << I << endl;
+					//cout << I << endl;
 					return statistics;
 				}
 				else {
@@ -580,16 +609,9 @@ public:
 			}
 
 			if (!consistent) {
-
-				//if (d == SearchNode::NullNode) {
-				//	d = n.decision(varh, valh, ds);
-				//}
-				//else {
-					//n.pop();
-					d = I.pop();
-					d = n.next(d, ds);
-				//}
-
+				n.pop();
+				d = I.pop();
+				d = n.next(d, ds);
 			}
 		}
 
@@ -640,9 +662,8 @@ static ByteSize GetBitSetSize(const int mds) {
 template<class T>
 SearchStatistics binary_search(GModel *gm, Heuristic::Var varh, Heuristic::Val valh, const int64_t time_limit, const int64_t start_time = 0) {
 	CPUSolver<T> s(gm, start_time);
-	//const SearchStatistics statistics = s.MAC(varh, valh, time_limit);
-
-	const SearchStatistics statistics = s.search(varh, valh, time_limit, Heuristic::DS_BI);
+	const SearchStatistics statistics = s.MAC(varh, valh, time_limit);
+	//const SearchStatistics statistics = s.search(varh, valh, time_limit, Heuristic::DS_NB);
 	return statistics;
 }
 
