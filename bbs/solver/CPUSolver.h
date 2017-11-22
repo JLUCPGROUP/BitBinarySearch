@@ -547,7 +547,7 @@ public:
 			IntVal val = n.selectIntVal(varh, valh);
 
 			if (t.elapsed() > time_limit) {
-				cout << t.elapsed() << endl;
+				//cout << t.elapsed() << endl;
 				statistics.time_out = true;
 				return statistics;
 			}
