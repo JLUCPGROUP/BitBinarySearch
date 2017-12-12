@@ -302,10 +302,9 @@ public:
 		top_ = I_->size() + 1;
 		for (size_t i = 0; i < vs_size_; i++) {
 			s_[pre][i] = s_[pre - 1][i] & bm_.bsd[val.v][val.a][i];
-			if (s_[pre][i].none())
+			if (!s_[pre][i].any())
 				return S_FAILED;
 		}
-
 		//for (size_t i = 0; i < vs_size_; ++i)
 		//	for (size_t j = 0; j < gm_->mds; ++j)
 		//		if (s_[pre][i][j])
@@ -315,7 +314,7 @@ public:
 
 		//for (size_t i = 0; i < vs_size_; ++i) {
 		//	s_[pre][i] &= r_[i];
-		//	if (s_[pre][i].none())
+		//	if (!s_[pre][i].any())
 		//		return S_FAILED;
 		//}
 		return S_BRANCH;
@@ -326,19 +325,19 @@ public:
 		top_ = I_->size() + 1;
 		r_.assign(vs_size_, 0);
 		s_[pre - 1][val.v][val.a] = 0;
-		if (s_[pre - 1][val.v].none())
+		if (!s_[pre - 1][val.v].any())
 			return S_FAILED;
 
-		for (size_t i = gm_->vs[val.v].min(); i <= gm_->vs[val.v].max(); ++i)
-			if (s_[pre - 1][val.v].test(i))
-				for (size_t j = 0; j < vs_size_; ++j)
-					r_[j] |= bm_.bsd[val.v][i][j];
+		//for (size_t i = gm_->vs[val.v].min(); i <= gm_->vs[val.v].max(); ++i)
+		//	if (s_[pre - 1][val.v].test(i))
+		//		for (size_t j = 0; j < vs_size_; ++j)
+		//			r_[j] |= bm_.bsd[val.v][i][j];
 
-		for (size_t i = 0; i < vs_size_; ++i) {
-			s_[pre][i] = r_[i] & s_[pre - 1][i];
-			if (s_[pre][i].none())
-				return S_FAILED;
-		}
+		//for (size_t i = 0; i < vs_size_; ++i) {
+		//	s_[pre][i] = r_[i] & s_[pre - 1][i];
+		//	if (!s_[pre][i].any())
+		//		return S_FAILED;
+		//}
 		return S_BRANCH;
 	}
 
@@ -567,7 +566,7 @@ public:
 			while (!(state == S_BRANCH) && !I.empty()) {
 				val = I.pop();
 				val.flip();
-				//++statistics.nodes;
+				++statistics.nodes;
 				state = n.push_back(val);
 			}
 
@@ -585,7 +584,7 @@ public:
 		bool consistent;
 		while ((!I.empty()) || (d != SearchNode::NullNode)) {
 			if (t.elapsed() > time_limit) {
-				cout << t.elapsed() << endl;
+				//cout << t.elapsed() << endl;
 				statistics.time_out = true;
 				return statistics;
 			}
@@ -662,8 +661,8 @@ static ByteSize GetBitSetSize(const int mds) {
 template<class T>
 SearchStatistics binary_search(GModel *gm, Heuristic::Var varh, Heuristic::Val valh, const int64_t time_limit, const int64_t start_time = 0) {
 	CPUSolver<T> s(gm, start_time);
-	const SearchStatistics statistics = s.MAC(varh, valh, time_limit);
-	//const SearchStatistics statistics = s.search(varh, valh, time_limit, Heuristic::DS_NB);
+	//const SearchStatistics statistics = s.MAC(varh, valh, time_limit);
+	const SearchStatistics statistics = s.search(varh, valh, time_limit, Heuristic::DS_NB);
 	return statistics;
 }
 
